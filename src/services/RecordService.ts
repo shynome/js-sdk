@@ -71,6 +71,8 @@ export interface OAuth2AuthConfig extends SendOptions {
 
     // optional query params to send with the PocketBase auth request (eg. fields, expand, etc.)
     query?: RecordOptions;
+
+    signal?: AbortSignal
 }
 
 export class RecordService<M = RecordModel> extends CrudService<M> {
@@ -480,6 +482,8 @@ export class RecordService<M = RecordModel> extends CrudService<M> {
 
         return new Promise(async (resolve, reject) => {
             try {
+                let signal:AbortSignal = config.signal
+                signal?.throwIfAborted()
                 await realtime.subscribe('@oauth2', async (e) => {
                     const oldState = realtime.clientId;
 
@@ -511,6 +515,10 @@ export class RecordService<M = RecordModel> extends CrudService<M> {
 
                     cleanup();
                 });
+                signal?.addEventListener("abort",()=>{
+                    cleanup();
+                    reject(new ClientResponseError(signal.reason));
+                })
 
                 const replacements: {[key: string]: any} = {
                     "state": realtime.clientId,

@@ -1,6 +1,9 @@
 {
     "version": "0.20.1",
-    "name": "pocketbase",
+    "name": "@shynome/pocketbase",
+    "publishConfig": {
+        "access": "public"
+    },
     "description": "PocketBase JavaScript SDK",
     "author": "Gani Georgiev",
     "license": "MIT",

@@ -570,6 +570,7 @@ interface OAuth2AuthConfig extends SendOptions {
     urlCallback?: OAuth2UrlCallback;
     // optional query params to send with the PocketBase auth request (eg. fields, expand, etc.)
     query?: RecordOptions;
+    signal?: AbortSignal;
 }
 declare class RecordService<M = RecordModel> extends CrudService<M> {
     readonly collectionIdOrName: string;
